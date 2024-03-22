@@ -5,7 +5,6 @@ author: Isabel Zimmerman || Posit, PBC
 format: 
     revealjs: 
         theme: [style.scss]
-footer: vetiver 
 slide-number: c/t
 ---
 
@@ -13,14 +12,20 @@ slide-number: c/t
 
 ::: incremental
 - if you would like, there is a very small code-along at the end of this talk!
-- to prepare, open up rstudio, and install the latest vetiver and pins packages
+- to prepare, open up RStudio, and have `vetiver`, `pins`, `tidymodels`, and `ranger` packages
 :::
 
 ::: notes
+vetiver
+pins
+tidymodels
+ranger
+plumber
+
 this talk is going to show python code, but don't worry! the concepts i'll show you are the exact same
 :::
 
-## who am i?
+## who am I?
 
 ::: columns
 ::: {.column width="50%"}
@@ -30,9 +35,7 @@ this talk is going to show python code, but don't worry! the concepts i'll show 
 
 [{{< fa brands github >}} \@isabelizimm](https://github.com/isabelizimm)
 
-[{{< fa brands linkedin >}} \isabel-zimmerman](https://www.linkedin.com/in/isabel-zimmerman/)
-
-[{{< fa link >}} isabelizimm.me](https://www.isabelizimm.me/)
+[{{< fa brands linkedin >}} \@isabel-zimmerman](https://www.linkedin.com/in/isabel-zimmerman/)
 
 </center>
 :::
@@ -58,12 +61,12 @@ graduated w data science degree, yippee!!
 
 
 ::: {.notes}
-when you start learning about data science, you see an image that looks something like this: you learn about tools such as --
+when i started learning about data science, you see an image that looks something like this: you learn about tools such as --
 
 and so when you write data science code in Python using the packages and BEST practices you've learned, it goes something like this:
 :::
 
-#
+## best practices in data science lifecycle
 
 ```{.python code-line-numbers="4"}
 import pandas as pd
@@ -79,7 +82,7 @@ df = raw[["like_count", "funny", "show_product_quickly", \
 set seed for reproducibility
 :::
 
-#
+## best practices in data science lifecycle
 
 ```{.python code-line-numbers="12-16"}
 import pandas as pd
@@ -103,7 +106,7 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(
 split into training and test sets
 :::
 
-#
+## best practices in data science lifecycle
 
 ```{.python code-line-numbers="16-18"}
 import pandas as pd
@@ -132,7 +135,7 @@ choose the right feature engineering for the job, and train your model
 put these together in a pipeline
 :::
 
-# 
+# many of the problems I faced were different, though
 
 
 ::: notes
@@ -176,10 +179,6 @@ with Kubernetes-based + models. after a while where i STRUGGLED with the tools a
 and while i don't think we should be oblivious to everything in the dev ops world, i do think that there is space for tools to help data scientists more effectively communicate with their IT or devops teams, while still feeling ergonomic for data scientists. 
 :::
 
-# 
-
-![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle.png?raw=true)
-
 # {background-iframe="logo-fall/index.html"}
 
 ![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/vetiverhex.png?raw=true){fig-align="center"}
@@ -190,13 +189,20 @@ and while i don't think we should be oblivious to everything in the dev ops worl
 i do work for posit, --- this company was formerly known as RStudio, so it may come as no surprise that vetiver is a python package, but also an R package as well.
 :::
 
+# 
 
-## what are some pieces used in mlops?
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle_no_ops.png?raw=true)
 
-- orchestration
-- experiment tracking
+# 
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle.png?raw=true)
+
+
+
+## what are some tasks vetiver helps with?
+
 - model versioning
-- model serving
+- model deployment
 - model monitoring
 
 ::: {.notes}
@@ -245,6 +251,22 @@ it would be nice if my models:
 
 ![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/pinshex.png?raw=true){fig-align="center"}
 
+## {pins}
+
+_pins package publishes data, models, and other R objects, making it easy to share them across projects and with your colleagues_
+
+::: incremental
+- can be pinned in a variety of locations (AWS, GCP, GitHub, Posit Connect, and more!)
+- good for sharing models, data, files, `.Rds` objects
+- good for a pipelines where data is read and/or updated
+- bad when multiple people are writing data at once
+:::
+
+::: notes
+- **Good** use for pins: an ETL pipeline that stores a model or summarized dataset once a day
+- **Bad** use for pins: a Shiny app that collects data from users, who may be using the app at the same time
+:::
+
 #
 
 ```{.python code-line-numbers="4-5"}
@@ -256,6 +278,24 @@ model_board = pins.board_temp( # create place for models to be stored
 
 v = VetiverModel(rf_pipe, "ads")
 ```
+
+:::{.notes}
+train a model FIRST
+
+inside this vetiver model object
+
+- input data prototype
+
+save a piece of your data to better debug when things go wrong
+
+trying to figure out how to solve a puzzle is a lot harder when you don't know what the finished product looks like
+
+- what packages are needed to recreate this model
+- metadata about the model
+
+
+also with leveraging pins, it makes it easy to move data between R and Python at places where this is possible
+:::
 
 #
 
@@ -309,14 +349,6 @@ Meta(title='ads: a pinned Pipeline object',
     name='ads', 
     user={'required_pkgs': ['vetiver', 'scikit-learn']})
 ```
-
-## know what your input data should look like
-
-- save a piece of your data to better debug when things go wrong
-
-:::{.notes}
-trying to figure out how to solve a puzzle is a lot harder when you don't know what the finished product looks like
-:::
 
 # 
 
@@ -394,6 +426,13 @@ actually, my dad has a quote that he always tells me--"if you haven't written it
 
 ![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_version.jpg?raw=true)
 
+::: notes
+model is saved in a central location, yay! BUT we want the model to be able to be used by others, without actually having to download it
+
+:::
+
+# deploy your model
+
 ## deploy your model
 
 ![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-cloud.jpg?raw=true)
@@ -403,7 +442,7 @@ creating model as a REST API endpoint
 
 useful bc model can be used in memory just like you loaded it! without having to load it
 
-also useful  since API endpoints are testable, 
+also useful  since API endpoints are testable, and work with json calls so you can call a Python model from R (or vice versa), if the input data is the same
 :::
 
 ## deploy your model
@@ -420,7 +459,7 @@ my_api.run()
 ## deploy your model
 
 ``` python
-vetiver.deploy_rsconnect(
+vetiver.deploy_connect(
     connect_server = connect_server, 
     board = model_board, 
     pin_name = "ads", 
@@ -430,9 +469,17 @@ vetiver.deploy_rsconnect(
 #
 
 ```python
-vetiver.write_app(board=board, pin_name="ads")
-vetiver.write_docker(app_file="app.py")
+vetiver.prepare_docker(board=board, pin_name="ads")
 ```
+
+::: notes
+generates the files needed to 
+
+`app.py` / `plumber.R` file
+Dockerfile
+requirement.txt or renv lockfile
+
+:::
 
 #
 
@@ -521,16 +568,11 @@ one thing vetiver has worked really hard on is to lower the barrier to entry on 
 
 you are still able to use the tools you want
 
-also with leveraging pins, it makes it easy to move data between R and Python at places where this is possible
-:::
-
-## vetiver.rstudio.com
-
-![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/summary.jpg?raw=true)
-
-::: {.notes}
-in a composable and ergonomic way
 :::
 
 ## resources
 
+- [Operationalizing Machine Learning: An Interview Study](https://arxiv.org/pdf/2209.09125.pdf)
+- [vetiver.rstudio.com](https://vetiver.rstudio.com/)
+- [My talk about vetiver at rstudio::conf(2022)](https://www.isabelizimm.me/talks/rstudioconf2022/)
+- [Julia Silge's screencast on vetiver+Docker](https://www.youtube.com/watch?v=5s7fI4cl2C8)

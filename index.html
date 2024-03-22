@@ -410,10 +410,11 @@ Isabel Zimmerman || Posit, PBC
 <div>
 <ul>
 <li class="fragment">if you would like, there is a very small code-along at the end of this talk!</li>
-<li class="fragment">to prepare, open up rstudio, and install the latest vetiver and pins packages</li>
+<li class="fragment">to prepare, open up RStudio, and have <code>vetiver</code>, <code>pins</code>, <code>tidymodels</code>, and <code>ranger</code> pins packages</li>
 </ul>
 </div>
 <aside class="notes">
+<p>vetiver pins tidymodels ranger plumber</p>
 <p>this talk is going to show python code, but don’t worry! the concepts i’ll show you are the exact same</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -428,14 +429,13 @@ Isabel Zimmerman || Posit, PBC
       }</style></aside>
 </section>
 <section id="who-am-i" class="slide level2">
-<h2>who am i?</h2>
+<h2>who am I?</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <center>
 <p><img src="https://github.com/isabelizimm.png" style="border-radius: 50%;" width="300px"></p>
 <p><a href="https://github.com/isabelizimm"><i class="fa-brands fa-github" aria-label="github"></i> @isabelizimm</a></p>
-<p><a href="https://www.linkedin.com/in/isabel-zimmerman/"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i> -zimmerman</a></p>
-<p><a href="https://www.isabelizimm.me/"><i class="fa-solid fa-link" aria-label="link"></i> isabelizimm.me</a></p>
+<p><a href="https://www.linkedin.com/in/isabel-zimmerman/"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i> \<span class="citation" data-cites="isabel-zimmerman">@isabel-zimmerman</span></a></p>
 </center>
 </div><div class="column" style="width:50%;">
 <center>
@@ -458,11 +458,12 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section>
+<section>
 <section id="section" class="title-slide slide level1 center">
 <h1></h1>
 
 <img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle_no_ops.png?raw=true" class="r-stretch"><aside class="notes">
-<p>when you start learning about data science, you see an image that looks something like this: you learn about tools such as –</p>
+<p>when i started learning about data science, you see an image that looks something like this: you learn about tools such as –</p>
 <p>and so when you write data science code in Python using the packages and BEST practices you’ve learned, it goes something like this:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -476,9 +477,8 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section>
-
-<section id="section-1" class="title-slide slide level1 center">
-<h1></h1>
+<section id="best-practices-in-data-science-lifecycle" class="slide level2">
+<h2>best practices in data science lifecycle</h2>
 <div class="sourceCode" id="cb1" data-code-line-numbers="4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
@@ -500,9 +500,8 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section>
-
-<section id="section-2" class="title-slide slide level1 center">
-<h1></h1>
+<section id="best-practices-in-data-science-lifecycle-1" class="slide level2">
+<h2>best practices in data science lifecycle</h2>
 <div class="sourceCode" id="cb2" data-code-line-numbers="12-16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-3"><a href="#cb2-3"></a></span>
@@ -532,9 +531,8 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section>
-
-<section id="section-3" class="title-slide slide level1 center">
-<h1></h1>
+<section id="best-practices-in-data-science-lifecycle-2" class="slide level2">
+<h2>best practices in data science lifecycle</h2>
 <div class="sourceCode" id="cb3" data-code-line-numbers="16-18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-3"><a href="#cb3-3"></a></span>
@@ -567,10 +565,9 @@ Isabel Zimmerman || Posit, PBC
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-
-<section id="section-4" class="title-slide slide level1 center">
-<h1></h1>
+</section></section>
+<section id="many-of-the-problems-i-faced-were-different-though" class="title-slide slide level1 center">
+<h1>many of the problems I faced were different, though</h1>
 <aside class="notes">
 <p>then i got to my first job and realized there’s more to think about than splitting test/training/etc you need to figure out how to share this model with teammates in a way that DOESNT include emailing your model to other people, you need to integrate it into some larger application (am i going to write this IN MY SHINY APP?), you need to ensure that it still performs well a week from now, or a month from now</p>
 <p>you start to realize that these practices are not always enough!</p>
@@ -587,7 +584,7 @@ Isabel Zimmerman || Posit, PBC
       }</style></aside>
 </section>
 
-<section id="section-5" class="title-slide slide level1 center">
+<section id="section-1" class="title-slide slide level1 center">
 <h1></h1>
 <div class="r-fit-text">
 <p>if you develop models…</p>
@@ -635,13 +632,7 @@ Isabel Zimmerman || Posit, PBC
 </div>
 </section>
 
-<section id="section-6" class="title-slide slide level1 center">
-<h1></h1>
-
-<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle.png?raw=true" class="r-stretch"></section>
-
-<section>
-<section id="section-7" class="title-slide slide level1 center" data-background-iframe="logo-fall/index.html">
+<section id="section-2" class="title-slide slide level1 center" data-background-iframe="logo-fall/index.html">
 <h1></h1>
 
 <img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/vetiverhex.png?raw=true" class="quarto-figure-center r-stretch"><aside class="notes">
@@ -661,13 +652,22 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-are-some-pieces-used-in-mlops" class="slide level2">
-<h2>what are some pieces used in mlops?</h2>
+
+<section id="section-3" class="title-slide slide level1 center">
+<h1></h1>
+
+<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle_no_ops.png?raw=true" class="r-stretch"></section>
+
+<section>
+<section id="section-4" class="title-slide slide level1 center">
+<h1></h1>
+
+<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle.png?raw=true" class="r-stretch"></section>
+<section id="what-are-some-tasks-vetiver-helps-with" class="slide level2">
+<h2>what are some tasks vetiver helps with?</h2>
 <ul>
-<li>orchestration</li>
-<li>experiment tracking</li>
 <li>model versioning</li>
-<li>model serving</li>
+<li>model deployment</li>
 <li>model monitoring</li>
 </ul>
 <aside class="notes">
@@ -732,12 +732,35 @@ Isabel Zimmerman || Posit, PBC
       }</style></aside>
 </div>
 </section></section>
-<section id="section-8" class="title-slide slide level1 center" data-background-iframe="logo-fall/index.html">
+<section>
+<section id="section-5" class="title-slide slide level1 center" data-background-iframe="logo-fall/index.html">
 <h1></h1>
 
 <img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/pinshex.png?raw=true" class="quarto-figure-center r-stretch"></section>
-
-<section id="section-9" class="title-slide slide level1 center">
+<section id="pins-sidequests" class="slide level2">
+<h2>pins sidequests</h2>
+<ul>
+<li>good for sharing models, data, files, <code>.Rds</code> objects</li>
+<li>can be pinned in a variety of locations (AWS, GCP, GitHub, Posit Connect, and more!)</li>
+</ul>
+<aside class="notes">
+<ul>
+<li><strong>Good</strong> use for pins: an ETL pipeline that stores a model or summarized dataset once a day</li>
+<li><strong>Bad</strong> use for pins: a Shiny app that collects data from users, who may be using the app at the same time</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section id="section-6" class="title-slide slide level1 center">
 <h1></h1>
 <div class="sourceCode" id="cb4" data-code-line-numbers="4-5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">import</span> pins</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="im">from</span> vetiver <span class="im">import</span> VetiverModel, vetiver_pin_write</span>
@@ -746,9 +769,33 @@ Isabel Zimmerman || Posit, PBC
 <span id="cb4-5"><a href="#cb4-5"></a>    allow_pickle_read <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb4-6"><a href="#cb4-6"></a></span>
 <span id="cb4-7"><a href="#cb4-7"></a>v <span class="op">=</span> VetiverModel(rf_pipe, <span class="st">"ads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>train a model FIRST</p>
+<p>inside this vetiver model object</p>
+<ul>
+<li>input data prototype</li>
+</ul>
+<p>save a piece of your data to better debug when things go wrong</p>
+<p>trying to figure out how to solve a puzzle is a lot harder when you don’t know what the finished product looks like</p>
+<ul>
+<li>what packages are needed to recreate this model</li>
+<li>metadata about the model</li>
+</ul>
+<p>also with leveraging pins, it makes it easy to move data between R and Python at places where this is possible</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 
-<section id="section-10" class="title-slide slide level1 center">
+<section id="section-7" class="title-slide slide level1 center">
 <h1></h1>
 <div class="sourceCode" id="cb5" data-code-line-numbers="4-5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">import</span> pins</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="im">from</span> vetiver <span class="im">import</span> VetiverModel, vetiver_pin_write</span>
@@ -759,7 +806,7 @@ Isabel Zimmerman || Posit, PBC
 <span id="cb5-7"><a href="#cb5-7"></a>v <span class="op">=</span> VetiverModel(rf_pipe, <span class="st">"ads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 
-<section id="section-11" class="title-slide slide level1 center">
+<section id="section-8" class="title-slide slide level1 center">
 <h1></h1>
 <div class="sourceCode" id="cb6" data-code-line-numbers="7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="im">import</span> pins</span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="im">from</span> vetiver <span class="im">import</span> VetiverModel, vetiver_pin_write</span>
@@ -770,7 +817,7 @@ Isabel Zimmerman || Posit, PBC
 <span id="cb6-7"><a href="#cb6-7"></a>v <span class="op">=</span> VetiverModel(rf_pipe, <span class="st">"ads"</span>) <span class="co"># create deployable model object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 
-<section id="section-12" class="title-slide slide level1 center">
+<section id="section-9" class="title-slide slide level1 center">
 <h1></h1>
 <div class="sourceCode" id="cb7" data-code-line-numbers="8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> pins</span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="im">from</span> vetiver <span class="im">import</span> VetiverModel, vetiver_pin_write</span>
@@ -782,8 +829,7 @@ Isabel Zimmerman || Posit, PBC
 <span id="cb7-8"><a href="#cb7-8"></a>vetiver_pin_write(model_board, v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 
-<section>
-<section id="section-13" class="title-slide slide level1 center">
+<section id="section-10" class="title-slide slide level1 center">
 <h1></h1>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>Meta(title<span class="op">=</span><span class="st">'ads: a pinned Pipeline object'</span>,</span>
 <span id="cb8-2"><a href="#cb8-2"></a>    description<span class="op">=</span><span class="st">"Scikit-learn &lt;class 'sklearn.pipeline.Pipeline'&gt; model"</span>, </span>
@@ -797,27 +843,9 @@ Isabel Zimmerman || Posit, PBC
 <span id="cb8-10"><a href="#cb8-10"></a>    name<span class="op">=</span><span class="st">'ads'</span>, </span>
 <span id="cb8-11"><a href="#cb8-11"></a>    user<span class="op">=</span>{<span class="st">'required_pkgs'</span>: [<span class="st">'vetiver'</span>, <span class="st">'scikit-learn'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="know-what-your-input-data-should-look-like" class="slide level2">
-<h2>know what your input data should look like</h2>
-<ul>
-<li>save a piece of your data to better debug when things go wrong</li>
-</ul>
-<aside class="notes">
-<p>trying to figure out how to solve a puzzle is a lot harder when you don’t know what the finished product looks like</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
+
 <section>
-<section id="section-14" class="title-slide slide level1 center">
+<section id="section-11" class="title-slide slide level1 center">
 <h1></h1>
 <div class="sourceCode" id="cb9" data-code-line-numbers="7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="im">import</span> pins</span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="im">from</span> vetiver <span class="im">import</span> VetiverModel, vetiver_pin_write</span>
@@ -894,18 +922,11 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section></section>
-<section>
-<section id="section-15" class="title-slide slide level1 center">
+<section id="section-12" class="title-slide slide level1 center">
 <h1></h1>
 
-<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_version.jpg?raw=true" class="r-stretch"></section>
-<section id="deploy-your-model" class="slide level2">
-<h2>deploy your model</h2>
-
-<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-cloud.jpg?raw=true" class="r-stretch"><aside class="notes">
-<p>creating model as a REST API endpoint</p>
-<p>useful bc model can be used in memory just like you loaded it! without having to load it</p>
-<p>also useful since API endpoints are testable,</p>
+<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_version.jpg?raw=true" class="r-stretch"><aside class="notes">
+<p>model is saved in a central location, yay! BUT we want the model to be able to be used by others, without actually having to download it</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -918,31 +939,69 @@ Isabel Zimmerman || Posit, PBC
           display:block!important;
       }</style></aside>
 </section>
+
+<section>
+<section id="deploy-your-model" class="title-slide slide level1 center">
+<h1>deploy your model</h1>
+
+</section>
 <section id="deploy-your-model-1" class="slide level2">
 <h2>deploy your model</h2>
 
-<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-not-here.jpg?raw=true" class="r-stretch"></section>
+<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-cloud.jpg?raw=true" class="r-stretch"><aside class="notes">
+<p>creating model as a REST API endpoint</p>
+<p>useful bc model can be used in memory just like you loaded it! without having to load it</p>
+<p>also useful since API endpoints are testable, and work with json calls so you can call a Python model from R (or vice versa), if the input data is the same</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="deploy-your-model-2" class="slide level2">
+<h2>deploy your model</h2>
+
+<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-not-here.jpg?raw=true" class="r-stretch"></section>
+<section id="deploy-your-model-3" class="slide level2">
 <h2>deploy your model</h2>
 <div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>my_api <span class="op">=</span> VetiverAPI(v)</span>
 <span id="cb13-2"><a href="#cb13-2"></a>my_api.run()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="deploy-your-model-3" class="slide level2">
+<section id="deploy-your-model-4" class="slide level2">
 <h2>deploy your model</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>vetiver.deploy_rsconnect(</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>vetiver.deploy_connect(</span>
 <span id="cb14-2"><a href="#cb14-2"></a>    connect_server <span class="op">=</span> connect_server, </span>
 <span id="cb14-3"><a href="#cb14-3"></a>    board <span class="op">=</span> model_board, </span>
 <span id="cb14-4"><a href="#cb14-4"></a>    pin_name <span class="op">=</span> <span class="st">"ads"</span>, </span>
 <span id="cb14-5"><a href="#cb14-5"></a>    version <span class="op">=</span> <span class="st">"59869"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
-<section id="section-16" class="title-slide slide level1 center">
+<section id="section-13" class="title-slide slide level1 center">
 <h1></h1>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>vetiver.write_app(board<span class="op">=</span>board, pin_name<span class="op">=</span><span class="st">"ads"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>vetiver.write_docker(app_file<span class="op">=</span><span class="st">"app.py"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>vetiver.prepare_docker(board<span class="op">=</span>board, pin_name<span class="op">=</span><span class="st">"ads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>generates the files needed to</p>
+<p><code>app.py</code> / <code>plumber.R</code> file Dockerfile requirement.txt or renv lockfile</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 
 <section>
-<section id="section-17" class="title-slide slide level1 center">
+<section id="section-14" class="title-slide slide level1 center">
 <h1></h1>
 
 <img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_deploy.jpg?raw=true" class="r-stretch"></section>
@@ -1019,7 +1078,7 @@ Isabel Zimmerman || Posit, PBC
       }</style></aside>
 </section></section>
 <section>
-<section id="section-18" class="title-slide slide level1 center">
+<section id="section-15" class="title-slide slide level1 center">
 <h1></h1>
 
 <img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_monitor.jpg?raw=true" class="r-stretch"></section>
@@ -1043,7 +1102,6 @@ Isabel Zimmerman || Posit, PBC
 <hr>
 <p>one thing vetiver has worked really hard on is to lower the barrier to entry on deploying models, making this feel like a natural extension of your current data science workflow</p>
 <p>you are still able to use the tools you want</p>
-<p>also with leveraging pins, it makes it easy to move data between R and Python at places where this is possible</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1057,25 +1115,14 @@ Isabel Zimmerman || Posit, PBC
       }</style></aside>
 </div>
 </section>
-<section id="vetiver.rstudio.com" class="slide level2">
-<h2>vetiver.rstudio.com</h2>
-
-<img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/summary.jpg?raw=true" class="r-stretch"><aside class="notes">
-<p>in a composable and ergonomic way</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section id="resources" class="slide level2">
 <h2>resources</h2>
+<ul>
+<li><a href="https://arxiv.org/pdf/2209.09125.pdf">Operationalizing Machine Learning: An Interview Study</a></li>
+<li><a href="https://vetiver.rstudio.com/">vetiver.rstudio.com</a></li>
+<li><a href="https://www.isabelizimm.me/talks/rstudioconf2022/">My talk about vetiver at rstudio::conf(2022)</a></li>
+<li><a href="https://www.youtube.com/watch?v=5s7fI4cl2C8">Julia Silge’s screencast on vetiver+Docker</a></li>
+</ul>
 <div class="footer footer-default">
 
 </div>

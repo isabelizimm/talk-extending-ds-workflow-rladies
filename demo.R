@@ -1,5 +1,6 @@
 library(tidyverse)
-superbowl_ads_raw <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')
+url <- 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv'
+superbowl_ads_raw <- read_csv(url)
 
 superbowl_ads <-
   superbowl_ads_raw %>%
@@ -18,7 +19,17 @@ rf_fit <-
 library(vetiver)
 v <- vetiver_model(rf_fit, "superbowl_rf")
 
+library(pins)
+
+board <- board_folder("./my_board", versioned = TRUE)
+
+vetiver_pin_write(board, v)
+vetiver_pin_read(board, "superbowl_rf")
+
+board %>% pin_meta("superbowl_rf")
+
 library(plumber)
 pr() %>%
   vetiver_api(v, debug = TRUE) %>%
   pr_run(port = 8080)
+
