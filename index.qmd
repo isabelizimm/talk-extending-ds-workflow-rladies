@@ -1,0 +1,536 @@
+---
+title: "Extending the data science workflow: {vetiver} and {pins}"
+subtitle: R-Ladies Rome 
+author: Isabel Zimmerman || Posit, PBC
+format: 
+    revealjs: 
+        theme: [style.scss]
+footer: vetiver 
+slide-number: c/t
+---
+
+## while you listen
+
+::: incremental
+- if you would like, there is a very small code-along at the end of this talk!
+- to prepare, open up rstudio, and install the latest vetiver and pins packages
+:::
+
+::: notes
+this talk is going to show python code, but don't worry! the concepts i'll show you are the exact same
+:::
+
+## who am i?
+
+::: columns
+::: {.column width="50%"}
+<center>
+
+<img src="https://github.com/isabelizimm.png" style="border-radius: 50%;" width="300px"/>
+
+[{{< fa brands github >}} \@isabelizimm](https://github.com/isabelizimm)
+
+[{{< fa brands linkedin >}} \isabel-zimmerman](https://www.linkedin.com/in/isabel-zimmerman/)
+
+[{{< fa link >}} isabelizimm.me](https://www.isabelizimm.me/)
+
+</center>
+:::
+
+::: {.column width="50%"}
+<center>
+![](images/IMG_6145.png)
+</center>
+:::
+
+:::
+
+
+::: notes
+work at posit as software engineer for two years--i did the whole full time school and work thing and graduated last year!
+
+graduated w data science degree, yippee!!
+:::
+
+# 
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle_no_ops.png?raw=true)
+
+
+::: {.notes}
+when you start learning about data science, you see an image that looks something like this: you learn about tools such as --
+
+and so when you write data science code in Python using the packages and BEST practices you've learned, it goes something like this:
+:::
+
+#
+
+```{.python code-line-numbers="4"}
+import pandas as pd
+import numpy as np
+
+np.random.RandomState(500)
+raw = pd.read_csv('https://bit.ly/3sWty5A')
+df = raw[["like_count", "funny", "show_product_quickly", \
+    "celebrity", "danger", "animals"]].dropna()
+```
+
+::: {.notes}
+set seed for reproducibility
+:::
+
+#
+
+```{.python code-line-numbers="12-16"}
+import pandas as pd
+import numpy as np
+
+np.random.RandomState(500)
+raw = pd.read_csv('https://bit.ly/3sWty5A')
+df = raw[["like_count", "funny", "show_product_quickly", \
+    "celebrity", "danger", "animals"]].dropna()
+
+from sklearn import model_selection, preprocessing, ensemble
+
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    df.drop(columns = ['like_count']),
+    df['like_count'],
+    test_size=0.2
+)
+```
+
+::: {.notes}
+split into training and test sets
+:::
+
+#
+
+```{.python code-line-numbers="16-18"}
+import pandas as pd
+import numpy as np
+
+np.random.RandomState(500)
+raw = pd.read_csv('https://bit.ly/3sWty5A')
+df = raw[["like_count", "funny", "show_product_quickly", \
+    "celebrity", "danger", "animals"]].dropna()
+
+from sklearn import model_selection, preprocessing, ensemble
+
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    df.drop(columns = ['like_count']),
+    df['like_count'],
+    test_size=0.2
+)
+oe = preprocessing.OrdinalEncoder().fit(X_train)
+rf = ensemble.RandomForestRegressor().fit(oe.transform(X_train), y_train)
+rf_pipe = pipeline.Pipeline([('ordinal_encoder',oe), ('random_forest', rf)])
+```
+
+::: {.notes}
+choose the right feature engineering for the job, and train your model
+
+put these together in a pipeline
+:::
+
+# 
+
+
+::: notes
+then i got to my first job and realized there's more to think about than splitting test/training/etc
+you need to figure out how to share this model with teammates in a way that DOESNT include emailing your model to other people, you need to integrate it into some larger application (am i going to write this IN MY SHINY APP?), you need to ensure that it still performs well a week from now, or a month from now
+
+you start to realize that these practices are not always enough!
+:::
+
+# 
+
+::: r-fit-text
+if you develop models...
+
+you can operationalize them
+:::
+
+::: notes
+the "real world" value of models often times comes from integrating
+
+my advice for you, is to bring your models outside!!
+
+you can learn to operationalize models using a set of practices called MLOps---
+:::
+
+# MLOps is...
+
+. . .
+
+a set of <u>practices</u> to *deploy* and *maintain* machine learning models in production **reliably** and **efficiently**
+
+. . .
+
+and these practices can be HARD.
+
+::: {.notes}
+these practices are to ... 
+
+with Kubernetes-based + models. after a while where i STRUGGLED with the tools at hand, i felt that, as a data scientist, i needed to productionalize models, but i didn't want to have to be a cloud architect as well a data scientist.
+
+and while i don't think we should be oblivious to everything in the dev ops world, i do think that there is space for tools to help data scientists more effectively communicate with their IT or devops teams, while still feeling ergonomic for data scientists. 
+:::
+
+# 
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ml_ops_cycle.png?raw=true)
+
+# {background-iframe="logo-fall/index.html"}
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/vetiverhex.png?raw=true){fig-align="center"}
+
+::: {.notes}
+- so i changed career paths to build new tools to make mlops feel like an extension of a data scientist's current workflow. and this tool, is named vetiver.
+
+i do work for posit, --- this company was formerly known as RStudio, so it may come as no surprise that vetiver is a python package, but also an R package as well.
+:::
+
+
+## what are some pieces used in mlops?
+
+- orchestration
+- experiment tracking
+- model versioning
+- model serving
+- model monitoring
+
+::: {.notes}
+Each open source project falls into one (or sometimes multiple) different categories to fulfill these different tasks: all-in-one, data pipeline, infrastructure, modeling and training, monitoring, and serving
+:::
+
+# versioning
+
+::: {.notes}
+people think of versioning, its usually in the context of git! but we version lots of different things, and mostly badly
+:::
+
+## versioning
+
+`model`
+
+. . .
+
+`model_final`
+
+. . .
+
+`model_final_final`
+
+. . . 
+
+`model_final_final_actually`
+
+. . . 
+
+`model_final_final_actually (1)`
+
+::: {.notes}
+versioning your model is the foundation for success in machine learning deployments...
+
+we can already see here this is not going to scale for ONE MODEL
+lacks context
+
+it would be nice if my models:
+- lived in a central location
+- were discoverable by my team
+- loaded right into memory
+:::
+
+# {background-iframe="logo-fall/index.html"}
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/pinshex.png?raw=true){fig-align="center"}
+
+#
+
+```{.python code-line-numbers="4-5"}
+import pins
+from vetiver import VetiverModel, vetiver_pin_write
+
+model_board = pins.board_temp( # create place for models to be stored
+    allow_pickle_read = True)
+
+v = VetiverModel(rf_pipe, "ads")
+```
+
+#
+
+```{.python code-line-numbers="4-5"}
+import pins
+from vetiver import VetiverModel, vetiver_pin_write
+
+model_board = pins.board_temp( # can also be s3, azure, gcs, connect
+    allow_pickle_read = True)
+
+v = VetiverModel(rf_pipe, "ads")
+```
+
+#
+
+```{.python code-line-numbers="7"}
+import pins
+from vetiver import VetiverModel, vetiver_pin_write
+
+model_board = pins.board_temp( # create place for models to be stored
+    allow_pickle_read = True)
+
+v = VetiverModel(rf_pipe, "ads") # create deployable model object
+```
+
+#
+
+```{.python code-line-numbers="8"}
+import pins
+from vetiver import VetiverModel, vetiver_pin_write
+
+model_board = pins.board_temp( # create place for models to be stored
+    allow_pickle_read = True)
+
+v = VetiverModel(rf_pipe, "ads") # create deployable model object
+vetiver_pin_write(model_board, v)
+```
+
+#
+
+``` python
+Meta(title='ads: a pinned Pipeline object',
+    description="Scikit-learn <class 'sklearn.pipeline.Pipeline'> model", 
+    created='20221102T094151Z', 
+    pin_hash='4db397b49e7bff0b', 
+    file='ads.joblib', 
+    file_size=1087, 
+    type='joblib', 
+    api_version=1, 
+    version=VersionRaw(version='65155'), 
+    name='ads', 
+    user={'required_pkgs': ['vetiver', 'scikit-learn']})
+```
+
+## know what your input data should look like
+
+- save a piece of your data to better debug when things go wrong
+
+:::{.notes}
+trying to figure out how to solve a puzzle is a lot harder when you don't know what the finished product looks like
+:::
+
+# 
+
+```{.python code-line-numbers="7"}
+import pins
+from vetiver import VetiverModel, vetiver_pin_write
+
+model_board = pins.board_temp(
+    allow_pickle_read = True)
+
+v = VetiverModel(rf, "ads", ptype_data = X_train)
+vetiver_pin_write(model_board, rf)
+```
+
+## utilizing model cards
+
+not only good models, but _good_ models
+
+- summary
+- documentation
+- fairness
+
+::: {.notes}
+from a team at google
+
+kinda like writing down a recipe
+
+this feels a bit different, since it is not as maybe TECHNICALLY involved
+:::
+
+## utilizing model cards
+
+``` python
+vetiver_pin_write(model_board, v)
+```
+
+## utilizing model cards
+
+``` bash
+Model Cards provide a framework for transparent, responsible reporting. 
+ Use the vetiver `.qmd` Quarto template as a place to start, 
+ with vetiver.model_card()
+```
+
+## utilizing model cards
+
+``` python
+vetiver.vetiver_pin_write(model_board, v)
+vetiver.model_card()
+```
+
+## utilizing model cards
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/title.png?raw=true)
+
+
+## utilizing model cards
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/quant.png?raw=true)
+
+## utilizing model cards
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/ethics.png?raw=true)
+
+::: {.notes}
+my model doesn't have any ethical challenges, it's predicting youtube likes
+
+instead of deleting any such section because you have incomplete or imprecise information, you note your own process and considerations. 
+
+
+actually, my dad has a quote that he always tells me--"if you haven't written it down, you haven't thought it out"
+:::
+
+#
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_version.jpg?raw=true)
+
+## deploy your model
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-cloud.jpg?raw=true)
+
+::: {.notes}
+creating model as a REST API endpoint
+
+useful bc model can be used in memory just like you loaded it! without having to load it
+
+also useful  since API endpoints are testable, 
+:::
+
+## deploy your model
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/deploy-not-here.jpg?raw=true)
+
+## deploy your model
+
+``` python
+my_api = VetiverAPI(v)
+my_api.run()
+```
+
+## deploy your model
+
+``` python
+vetiver.deploy_rsconnect(
+    connect_server = connect_server, 
+    board = model_board, 
+    pin_name = "ads", 
+    version = "59869")
+```
+
+#
+
+```python
+vetiver.write_app(board=board, pin_name="ads")
+vetiver.write_docker(app_file="app.py")
+```
+
+#
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_deploy.jpg?raw=true)
+
+## monitoring
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/decay.jpeg?raw=true)
+
+::: {.notes}
+model is deployed a data scientist's work is not done!
+
+now, monitoring means somthing unique in MLOps-- not necessarily looking at CPU usage, runtime, etc, 
+
+looking at statistical properties of input data or predictions
+:::
+
+## monitoring
+
+```{.python code-line-numbers="1,10,17"}
+metrics = vetiver.compute_metrics(
+    new_data, 
+    "date", 
+    timedelta(weeks = 1), 
+    [mean_absolute_error, r2_score], 
+    "like_count", 
+    "y_pred"
+    )
+
+vetiver.pin_metrics(
+    model_board, 
+    metrics, 
+    "metrics_pin_name", 
+    overwrite = True
+    )
+    
+vetiver.plot_metrics(metrics)
+```
+
+::: {.notes}
+we won't look super deep at these functions right, but 
+:::
+
+## monitoring
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/silent_error.jpeg?raw=true)
+
+::: {.notes}
+it is SO IMPORTANT TO TRACK your model's performance metrics start decaying.
+
+software engineering--when things went wrong, ERROR
+
+models fail silently! and they can still run with no error, even if your accuracy is zero percent--
+
+if you are not monitoring your model in some way, you are oblivious to decay.
+:::
+
+#
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/mlops_monitor.jpg?raw=true)
+
+## Why should I be excited about vetiver?
+
+Composability
+
+- Internally, with `VetiverAPI` and `VetiverModel`
+- Externally, leveraging the tools vetiver is built on
+
+. . .
+
+Ergonomics
+
+- feels good to use
+- works with the tools you like
+
+
+::: {.notes}
+few simple tools that you are able to compose together to make complex objects
+
+since vetiverapi is built on fastapi/plumber, can build out to be quite complex
+also has methods to add other POST endpoints
+
+also is composable with other tools to build out a custom framework that works well for your team
+---
+one thing vetiver has worked really hard on is to lower the barrier to entry on deploying models, making this feel like a natural extension of your current data science workflow
+
+you are still able to use the tools you want
+
+also with leveraging pins, it makes it easy to move data between R and Python at places where this is possible
+:::
+
+## vetiver.rstudio.com
+
+![](https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/summary.jpg?raw=true)
+
+::: {.notes}
+in a composable and ergonomic way
+:::
+
+## resources
+
