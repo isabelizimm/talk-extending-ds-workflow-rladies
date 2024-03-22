@@ -410,7 +410,7 @@ Isabel Zimmerman || Posit, PBC
 <div>
 <ul>
 <li class="fragment">if you would like, there is a very small code-along at the end of this talk!</li>
-<li class="fragment">to prepare, open up RStudio, and have <code>vetiver</code>, <code>pins</code>, <code>tidymodels</code>, and <code>ranger</code> pins packages</li>
+<li class="fragment">to prepare, open up RStudio, and have <code>vetiver</code>, <code>pins</code>, <code>tidymodels</code>, and <code>ranger</code> packages</li>
 </ul>
 </div>
 <aside class="notes">
@@ -435,7 +435,7 @@ Isabel Zimmerman || Posit, PBC
 <center>
 <p><img src="https://github.com/isabelizimm.png" style="border-radius: 50%;" width="300px"></p>
 <p><a href="https://github.com/isabelizimm"><i class="fa-brands fa-github" aria-label="github"></i> @isabelizimm</a></p>
-<p><a href="https://www.linkedin.com/in/isabel-zimmerman/"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i> \<span class="citation" data-cites="isabel-zimmerman">@isabel-zimmerman</span></a></p>
+<p><a href="https://www.linkedin.com/in/isabel-zimmerman/"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i> @isabel-zimmerman</a></p>
 </center>
 </div><div class="column" style="width:50%;">
 <center>
@@ -737,12 +737,17 @@ Isabel Zimmerman || Posit, PBC
 <h1></h1>
 
 <img data-src="https://github.com/isabelizimm/pydata-nyc2022/blob/main/images/pinshex.png?raw=true" class="quarto-figure-center r-stretch"></section>
-<section id="pins-sidequests" class="slide level2">
-<h2>pins sidequests</h2>
+<section id="pins" class="slide level2">
+<h2>{pins}</h2>
+<p><em>pins package publishes data, models, and other R objects, making it easy to share them across projects and with your colleagues</em></p>
+<div>
 <ul>
-<li>good for sharing models, data, files, <code>.Rds</code> objects</li>
-<li>can be pinned in a variety of locations (AWS, GCP, GitHub, Posit Connect, and more!)</li>
+<li class="fragment">can be pinned in a variety of locations (AWS, GCP, GitHub, Posit Connect, and more!)</li>
+<li class="fragment">good for sharing models, data, files, <code>.Rds</code> objects</li>
+<li class="fragment">good for a pipelines where data is read and/or updated</li>
+<li class="fragment">bad when multiple people are writing data at once</li>
 </ul>
+</div>
 <aside class="notes">
 <ul>
 <li><strong>Good</strong> use for pins: an ETL pipeline that stores a model or summarized dataset once a day</li>
